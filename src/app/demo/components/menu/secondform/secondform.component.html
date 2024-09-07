@@ -1,0 +1,177 @@
+<p-confirmDialog></p-confirmDialog>
+
+<div class="card">
+    <div class="justify-content-left">
+
+        <p-button (click)="showDialog()" label="Register Student"></p-button>
+        <p-dialog header=" Please fill the below details:" [(visible)]="visible" [style]="{width: '80vw'}">
+
+            <div>
+                <form [formGroup]="studentForm">
+                    <div class="p-fluid p-formgrid grid">
+
+                        <!-- Student ID -->
+                        <div class="field col-4">
+                            <label htmlFor="id">Student ID</label>
+                            <input pInputText id="id" type="number" formControlName="id" class="inputgap" />
+                        </div>
+
+                        <!-- First Name -->
+                        <div class="field col-4">
+                            <label htmlFor="firstName">First Name</label>
+                            <input pInputText id="firstName" type="text" formControlName="firstName" class="inputgap"
+                                pattern="[A-Za-z]*" required />
+                            <div *ngIf="studentForm.get('firstName').invalid && studentForm.get('firstName').touched">
+                                <small class="p-error">First Name is required & can only contain alphabet
+                                    characters.</small>
+                            </div>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="field col-4">
+                            <label htmlFor="lastName">Last Name</label>
+                            <input pInputText id="lastName" type="text" formControlName="lastName" class="inputgap" />
+                            <div *ngIf="studentForm.get('lastName').invalid && studentForm.get('lastName').touched">
+                                <small class="p-error">Last Name is required & can only contain alphabet
+                                    characters.</small>
+                            </div>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="field col-4">
+                            <label htmlFor="gender">Gender</label>
+                            <p-dropdown formControlName="gender" [options]="genderlist" optionLabel="name"
+                                optionValue="value" placeholder="Select gender" class="inputgap"></p-dropdown>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="field col-4">
+                            <label htmlFor="phoneno">Phone No.</label>
+                            <input pInputText id="phoneno" type="text" formControlName="phoneno" class="inputgap" />
+                            <div *ngIf="studentForm.get('phoneno').invalid && studentForm.get('phoneno').touched">
+                                <small class="p-error">Phone Number is required and must be 10 digits.</small>
+                            </div>
+                        </div>
+
+                        <!-- Age -->
+                        <div class="field col-4">
+                            <label htmlFor="age">Age</label>
+                            <input pInputText id="age" type="number" formControlName="age" class="inputgap" />
+                        </div>
+                    </div>
+
+                    <div class="p-fluid p-formgrid grid">
+
+                        <!-- Blood Group -->
+                        <div class="field col-4">
+                            <label htmlFor="bloodGroup">Blood Group</label>
+                            <div *ngFor="let group of bloodGroups" class="field-radiobutton">
+                                <p-radioButton name="bloodGroup" [value]="group.value" formControlName="bloodGroup"
+                                    inputId="{{group.value}}">
+                                </p-radioButton>
+                                <label htmlFor="{{group.value}}">{{group.label}}</label>
+                            </div>
+                        </div>
+
+                        <!-- DOB -->
+                        <div class="field col-4">
+                            <label htmlFor="dob">DOB</label>
+                            <p-calendar formControlName="date" [showIcon]="true" appendTo="body"
+                                class="inputgap"></p-calendar>
+                        </div>
+                    </div>
+
+                    <!-- Address  -->
+                    <h5>Address</h5>
+                    <h6>Current Address</h6>
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="field col-12 md:col-12">
+                            <label htmlFor="streetAdd">Street Address</label>
+                            <input pInputText id="streetAdd" type="text" formControlName="streetAdd" />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="city">City</label>
+                            <input pInputText id="city" type="text" formControlName="city" />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="state">State</label>
+                            <input pInputText id="state" type="text" formControlName="state" />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="pinCode">Pin Code</label>
+                            <input pInputText id="pinCode" type="text" formControlName="pinCode" />
+                        </div>
+                        <div class="field-checkbox">
+                            <label htmlFor="cloneCheckbox">Is current address the same as permanent address?</label>
+                            <input type="checkbox" formControlName="cloneAddress" (change)="cloneCheckboxChange()" />
+                        </div>
+                    </div>
+
+                    <h6>Permanent Address</h6>
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="field col-12 md:col-12">
+                            <label htmlFor="sA">Street Address</label>
+                            <input pInputText id="sA" type="text" formControlName="sA" />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="c">City</label>
+                            <input pInputText id="c" type="text" formControlName="c" />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="s">State</label>
+                            <input pInputText id="s" type="text" formControlName="s" />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="pC">Pin Code</label>
+                            <input pInputText id="pC" type="text" formControlName="pC" />
+                        </div>
+                    </div>
+
+                    <button pButton type="button" label="Submit" (click)="submit()"></button>
+                </form>
+
+            </div>
+        </p-dialog>
+    </div>
+
+    <p></p>
+    <p>Total Student Count: {{ studentList.length }}</p>
+
+    <p-table [value]="studentList" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Student Id</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>DOB</th>
+                <th>Address</th>
+                <th>Contact no.</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-student>
+            <tr>
+                <td>{{ student.id }}</td>
+                <td>{{ student.firstName }}</td>
+                <td>{{ student.lastName }}</td>
+                <td>{{ student.gender }}</td>
+                <td>{{ student.age }}</td>
+                <td>{{ student.date | date: 'yyyy-MM-dd' }}</td>
+
+                <td>{{ student.streetAdd}},{{ student.city }},{{ student.state }},{{ student.pinCode }}</td>
+                <td>{{ student.phoneno }}</td>
+                <td>
+                    <div class="button-container">
+                        <button pButton type="button" label="Edit" (click)="edit(student)"></button>
+                        <button pButton type="button" label="delete" (click)="deleteUser(student.id)"
+                            class="delete-button"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+
+    </p-table>
+
+</div>
